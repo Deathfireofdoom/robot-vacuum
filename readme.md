@@ -6,7 +6,7 @@ I provided a post-man collection to easily send job to the robot.
 # How to get started
 This project is deployed with docker-compose, so need docker-compose and docker.
 
-Get into project root, so `/tibber-robot-vacuum-slim`
+Get into project root
 ```
 cd <project-root>
 ```
