@@ -8,6 +8,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./robot-server
 
     steps:
       - name: Checkout Code  
@@ -17,9 +20,6 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: 3.11
-
-      - name: Change working dir
-        run: cd robot-server
 
       - name: Install dependencies
         run: pip install -r test-requirements.txt
