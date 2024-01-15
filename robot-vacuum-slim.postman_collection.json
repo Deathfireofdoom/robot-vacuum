@@ -19,7 +19,6 @@
 					],
 					"port": "5000",
 					"path": [
-						"api",
 						"migrate",
 						"1",
 						"up"
