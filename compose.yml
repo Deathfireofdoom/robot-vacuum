@@ -1,0 +1,41 @@
+version: "3"
+services:
+    # NOTE: Sadly the robot-server does not wait for unit-test-robot-server to exit with code 0.
+    #       This would be done in ci/cd anyway. 
+    unit-test-robot-server:
+      build:
+        context: ./robot-server
+        dockerfile: Dockerfile.tests
+
+    robot-server:
+      build:
+        context: ./robot-server
+      ports:
+        - "5000:5000"
+      environment:
+        - FLASK_APP=app.py
+        - FLASK_RUN_HOST=0.0.0.0
+        - FLASK_RUN_PORT=5000
+        - FLASK_ENV=development
+        - POSTGRES_DB=dev
+        - POSTGRES_HOST=postgres
+        - POSTGRES_PORT=5432
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      depends_on:
+        - unit-test-robot-server
+        - postgres
+      
+    postgres:
+      image: "postgres:latest"
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_DB=dev
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:

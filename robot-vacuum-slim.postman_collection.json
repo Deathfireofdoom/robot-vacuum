@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "8d22c1a6-4e8e-4850-93f1-3b29b68156f8",
+		"name": "robot-vacuum-slim",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13362924"
+	},
+	"item": [
+		{
+			"name": "1 - migrate-db",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/migrate/1/up",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"migrate",
+						"1",
+						"up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2 - submit-job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start\": {\r\n        \"x\": 10,\r\n        \"y\": 22\r\n    },\r\n    \"commands\": [\r\n        {\r\n            \"direction\": \"east\",\r\n            \"steps\": 2\r\n        },\r\n        {\r\n            \"direction\": \"north\",\r\n            \"steps\": 1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/tibber-developer-test/enter-path",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"tibber-developer-test",
+						"enter-path"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
