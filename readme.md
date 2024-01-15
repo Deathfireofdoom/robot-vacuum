@@ -1,14 +1,3 @@
-### Message to Tibber
-First of all, Hi.
-
-Here is my solution on the technical case, I spent around 2-3 hours writing the code and the tests, then around 1h for the readme, some refactoring and styling. I had a great time. Even though the task in itself is small, I tried to make it "complex" enough to enable further development, I am happy with what I have done in this limited timeframe.
-
-I also spent some time developing a more complex solution decoupling the "server" and the "robot" in a more event-driven architecture utilising a messagebus. At around 90% I got cold feet and slim it down so it actually followed the instructions given and not overengineered a simple task, therefore "slim" in the name. But if you are interested I can send it over / show it, with the note that it would benefit from a 1-2h cleanup/refactoring. Implemented some nice features like live tracking of the robot and queuing of jobs. 
-
-Any way, even though I am happy with what I have done I am aware its not perfect and I appreciate any feedback that could help me do it better next time.
-
-Looking forward to discuss this.
-
 # Overview
 The robot-vacuum-slim is a rest-api written in python 3.11 with the framework Flask. Since the "api" part is minimal, one main endpoint with one method, I did not put that much thought into choosing flask over other frameworks. 
 
