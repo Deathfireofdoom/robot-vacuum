@@ -18,8 +18,11 @@ jobs:
         with:
           python-version: 3.11
 
+      - name: Change working dir
+        run: cd robot-server
+
       - name: Install dependencies
-        run: pip install -r robot-server/test-requirements.txt
+        run: pip install -r test-requirements.txt
 
       - name: Run tests
-        run: pytest robot-server/
+        run: pytest
