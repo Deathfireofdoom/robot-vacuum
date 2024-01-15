@@ -86,4 +86,4 @@ I am running the test in a dockerfile so you dont have too, but if you want to r
 # GitHub workflow
 Added a simple ci/cd pipeline to test, build and push the image to a ghcr.io. 
 
-I did not bother adding complex rules on only building/pushing when merging into main, but that would of course needed to be implemented in real life, with branch protecting rules etc.
+A new "deployment" is done by making a new tag.
