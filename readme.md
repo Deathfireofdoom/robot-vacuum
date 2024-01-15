@@ -27,7 +27,7 @@ curl http://localhost:5000/migrate/1/up
 ```
 _to migrate up just change to down_ 
 
-Everything should not be up and running, ready to accept jobs.
+Everything should now be up and running, ready to accept jobs.
 
 # Design and thought process
 ### Repository and service pattern
