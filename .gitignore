@@ -1,0 +1,64 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment (venv) directories
+venv/
+
+# IDE-specific files (e.g., VS Code, PyCharm, and others)
+.vscode/
+.idea/
+
+# Logs and runtime data
+*.log
+*.log.*
+*.pyc
+
+# Local development environment files
+.env
+.pytest_cache/
+__init__.py
+
+# Compiled Python files
+*.pyo
+
+# Cache and temporary files
+__pycache__/
+*.cache
+*.egg-info/
+*.egg
+*.temp
+*.tmp
+
+# Output of Sphinx documentation generator
+_build/
+
+# Flask and web-specific cache and temporary files
+instance/
+.webassets-cache/
+
+# .DS_Store files (macOS)
+.DS_Store
+
+# Environment configuration
+.env.local
+.env.dev
+.env.test
+.env.prod
+
+# Pycache files from Python 3.7+
+__pycache__/
+
+# Compiled output
+__pycache__/
+*.py[cod]
+
+# For pipenv
+Pipfile.lock
+
+# SQLAlchemy files
+*.sqlite
+
+# Jupyter Notebook
+.ipynb_checkpoints/
