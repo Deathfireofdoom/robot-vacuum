@@ -19,7 +19,7 @@ jobs:
           python-version: 3.11
 
       - name: Install dependencies
-        run: pip install -r robot-vacuum/requirements.txt
+        run: pip install -r robot-server/test-requirements.txt
 
       - name: Run tests
         run: pytest robot-server/
