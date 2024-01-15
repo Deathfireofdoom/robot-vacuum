@@ -1,5 +1,7 @@
 version: "3"
 services:
+    # NOTE: In case you cant pull from GHCR uncomment this block.
+    #
     # unit-test-robot-server-local:
     #   build:
     #     context: ./robot-server
@@ -25,7 +27,7 @@ services:
     #     - postgres
 
     robot-server-ghcr:
-      image: "ghcr.io/deathfireofdoom/robot-vacuum:latest"
+      image: "ghcr.io/deathfireofdoom/robot-vacuum:main"
       ports:
         - "5000:5000"
       environment:

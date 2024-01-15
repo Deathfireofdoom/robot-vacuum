@@ -15,7 +15,7 @@ Run docker compose
 ```
 docker compose up
 ```
-Check that everything started as it should 
+Check that everything started as it should, if you have trouble pulling from GHCR I may need to ask you uncomment the block in compose.yml and build it locally. 
 ```
 curl http://localhost:5000/health 
 ```
