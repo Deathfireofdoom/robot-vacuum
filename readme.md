@@ -29,7 +29,6 @@ _to migrate up just change to down_
 
 Everything should not be up and running, ready to accept jobs.
 
-
 # Design and thought process
 ### Repository and service pattern
 Even though Python is a OOP language I decided to not go with inherientance/mixins, instead I went for the repository and service pattern. I personally find this pattern more enjoyable, and easier to understand.
@@ -82,3 +81,9 @@ A different approach to the above problem could be to more extensive mocking, so
 Things like interaction with databases, or other external systems, should of course be mocked. Therefore I implemented the `mock_transaction_scope`. 
 
 I am running the test in a dockerfile so you dont have too, but if you want to run them yourself make sure to install the `test-requirements.txt` since I do pytest.
+
+
+# GitHub workflow
+Added a simple ci/cd pipeline to test, build and push the image to a ghcr.io. 
+
+I did not bother adding complex rules on only building/pushing when merging into main, but that would of course needed to be implemented in real life, with branch protecting rules etc.
