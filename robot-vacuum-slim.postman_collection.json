@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/migrate/1/up",
+					"raw": "http://localhost:5000/migrate/1/up",
 					"protocol": "http",
 					"host": [
 						"localhost"
