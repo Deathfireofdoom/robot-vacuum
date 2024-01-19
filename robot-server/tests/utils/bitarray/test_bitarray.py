@@ -33,5 +33,6 @@ def test_bitarray_clear_bit(bitarray):
     bitarray.clear_bit(index)
 
     # Assert
-    assert bitarray.get_bit(index)
+    assert bitarray.get_bit(index) == 0
+
     
