@@ -47,21 +47,16 @@ def test_robot_reset_memory_on_new_job(robot, mock_transaction_scope):
     assert first_job_memory != second_job_memory
 
 
-def test_calculate_new_location_correctly(robot):
-    """
-    New location should be one cordinate in the provided direction
-    """
+def test_if_robot_moves_correctly(robot, mock_transaction_scope):
     # Arrange
-    start_x = 0
-    start_y = 0
-    start_location = Location(x=start_x, y=start_y)
-    directions_with_expected_result = {
-        Direction.NORTH: Location(x=start_x + 1, y=start_y),
-        Direction.EAST: Location(x=start_x, y=start_y + 1),
-        Direction.SOUTH: Location(x=start_x - 1, y=start_y),
-        Direction.WEST: Location(x=start_x, y=start_y - 1),
-    }
+    robot.x, robot.y = 0, 0
 
     # Act & Assert
-    for direction, result in directions_with_expected_result.items():
-        assert result == robot._calculate_new_location(start_location, direction)
+    robot._move_east()
+    assert robot.x == 0 and robot.y == 1
+    robot._move_west()
+    assert robot.x == 0 and robot.y == 0
+    robot._move_north()
+    assert robot.x == 1 and robot.y == 0
+    robot._move_south()
+    assert robot.x == 0 and robot.y == 0

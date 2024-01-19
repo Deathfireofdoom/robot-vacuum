@@ -8,7 +8,7 @@ from src.models.location import Location
 
 from src.services.job_result_service import JobResultService
 
-from .memory import Memory
+from .memory import BitMapMemory
 
 from src.utils.logger import get_logger
 
@@ -28,7 +28,8 @@ class Robot:
         # move robot to start location
         start_time = datetime.now()
         log.info(f"starting job at {start_time.isoformat()}")
-        self._update_location(location=job.start)
+        self.x, self.y = job.start.x, job.start.y
+        self.memory.add_location(self.x, self.y)
 
         # loop the commands and act on them
         for command in job.commands:
@@ -45,42 +46,41 @@ class Robot:
         return job_result
 
     def _act_on_command(self, command: Command):
-        for step in range(command.steps):
-            log.info(
-                f"taking {step} of {command.steps} in direction {command.direction}"
-            )
-            self._move_robot(direction=command.direction)
+        action = self._get_action(command.direction)
+        for _ in range(command.steps):
+            action()
+            self.memory.add_location(self.x, self.y)
 
-    def _move_robot(self, direction: Direction):
-        new_location = self._calculate_new_location(
-            old_location=self.location, direction=direction
-        )
-        self._update_location(new_location)
+    def _move_north(self):
+        self.x += 1
 
-    def _update_location(self, location: Location):
-        self.location = location
-        self.memory.add_location(self.location)
+    def _move_east(self):
+        self.y += 1
 
-    @staticmethod
-    def _calculate_new_location(
-        old_location: Location, direction: Direction
-    ) -> Direction:
+    def _move_south(self):
+        self.x -= 1
+    
+    def _move_west(self):
+        self.y -= 1
+    
+    def _get_action(
+        self, direction: Direction
+    ):
         match Direction(direction):
             case Direction.NORTH:
-                return Location(old_location.x + 1, old_location.y)
+                return self._move_north
             case Direction.EAST:
-                return Location(old_location.x, old_location.y + 1)
+                return self._move_east
             case Direction.SOUTH:
-                return Location(old_location.x - 1, old_location.y)
+                return self._move_south
             case Direction.WEST:
-                return Location(old_location.x, old_location.y - 1)
+                return self._move_west
             case _:
                 log.warning(f"{direction} is not a real direction, ignoring...")
-                return old_location
 
     def _reset_or_initilise_memory(self):
         """
         I could in theory put this logic inside the Memory class, but to avoid unexpected bugs with
         reusing a class I decided it would be best to just get a new one.
         """
-        self.memory = Memory()
+        self.memory = BitMapMemory()

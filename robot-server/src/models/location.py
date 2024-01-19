@@ -3,8 +3,7 @@ from dataclasses import dataclass
 
 from .exceptions import get_type_error_for_data_validation
 
-
-@dataclass(frozen=True)  # To make it hashable
+@dataclass
 class Location:
     x: int
     y: int
