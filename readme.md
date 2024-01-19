@@ -133,7 +133,11 @@ I will limit commands to 300, dont want to wait all day, and since I am running 
 
 ##### New memory
 This will be the start point since the set-memory approach does not really finish with 300 commands. So the new bit-array-memory is implemented, the rest is as before.
-43.7460  47.2832  45.6277 1.4347
+|min    | avg    | max    | std   |
+|-------|--------|--------|-------|
+|43.7460|47.2832 |45.6277 |1.4347 |
+
+time in seconds
 
 
 ##### Changing logic of handling command
@@ -184,7 +188,7 @@ This was kind of successful
 
 
 ##### Making location mutable
-To get performance increases we need to focus on parts that either is slow, which we dont really know, or parts that are repeated many times. One of these is updating the location, it is done every step, so potentially 10 000 000 000 times in a run.
+To get performance increases we need to focus on parts that either is slow or parts that are repeated many times. One of these is updating the location, it is done every step, so potentially 10 000 000 000 times in a run.
 
 
 In the inital code I put location as a immuatable object, two reasons, a location is normally static and it needed to be static for the set approach to work. Since we no longer uses that approach I think I will unfreeze the location, and start updating the location instead of making a new one.
