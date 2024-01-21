@@ -22,7 +22,7 @@ class BitMapMemory:
         y_adjusted = y + self.width // 2 
         x_adjusted = x + self.height // 2
 
-        # Here we calculate the "location"-pos in the 2d array
+        # Here we calculate the "location"-pos in the flatten array
         # To make it easier we leave the adjusted part and do a small array, 3*3.
         # Ex. [0, 0, 0, | 0, 0, 0, | 0, 0, 0] - each pipe is a COLUMN, so first value is
         #    (0, 0), (0, 1), (0, 2)
