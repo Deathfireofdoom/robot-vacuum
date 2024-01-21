@@ -263,54 +263,114 @@ The code has been improved a lot from the start, from dnf til 5 min, memory foot
 Since majority of the time is spent in the memory part(checked this by disabling memory) I believe there is little to gain from making other improvements outside the memory class. Solving(trying to solve) the memory part has been a fun and educating challenge for me, but I have this feeling I am missing something, either that SparseMatrix or QuadTree was the way to go, but it was my implementation that failed it, or that there is a better method. I dont see how we could store 10 000 000 000 locations in a dynamic way without getting memory issues.
 
 
-##### Extra - Did not work - Changing the logic to call action-function to work with delta
-The last performance change I will do is kind of a major change how we calculate the next position. The new idea I had was to compute delta x and delta y, so north would be dx=1, dy=0. etc.
+### Performance improvements round two
+After submitting the above version yesterday, I had a hard time letting go the fact that we were using 4GB of memory, even if we just wanted to traverse 2 points. This was a side effect of the bitmap-memory, where I rendered the whole 200 001 by 200 001 grid as the first step. Ealier in my performance optimization journey, when I tried to implement a similar idea but with list and bools in pure python, I had the idea of subgridding. 
 
 
-This solution will reduce the call of action(), which probably have some overhead.
+Instead of rendering everything from the start my plan was to render a chunk in the proximity of the robot, and if it stepped out of the chunk, a new one would be rendered. This did not work with list + bools, due to the reasons stated above, but this should work with my new bitmap array memory.
+
+
+The concept is that I will take the 200 001 x 200 001 grid, divide it into smaller grids (I started with 10 000 x 10 000, just a random number), and only render the bitarray for each subgrid if we ever stepped into it. The first version looked liked:
 
 ```
-def _act_on_command_performance(self, command: Command):
-    if command.direction == Direction.NORTH:
-        dx, dy = 1, 0
-    elif command.direction == Direction.EAST:
-        dx, dy = 0, 1
-    elif command.direction == Direction.SOUTH:
-        dx, dy = -1, 0
-    elif command.direction == Direction.WEST:
-        dx, dy = 0, -1
+class DynamicGridBitMapMemory:
+    total_grid_height = 200_001
+    total_grid_width = 200_001
+    sub_grid_size = 10_000  # each subgrid is sub_grid_size x sub_grid_size
 
-    for _ in range(command.steps):
-        self.x += dx
-        self.y += dy
-        self.memory.add_location(self.x, self.y)
+    def __init__(self):
+        self.unique_visited = 0
+        self.grids = {}
+
+    def add_location(self, x: int, y: int):
+        # Adjust coordinates
+        x_adjusted = x + self.total_grid_width // 2
+        y_adjusted = y + self.total_grid_height // 2
+
+        # Get the grid-index of the sub-grid
+        grid_pos = self._get_grid_index(x_adjusted, y_adjusted)
+
+        # Check if grid exists
+        if grid_pos not in self.grids:
+            self.grids[grid_pos] = bitarray(self.sub_grid_size * self.sub_grid_size)
+            self.grids[grid_pos].setall(0)
+
+        # Get location index in the sub-grid
+        location_index = self._get_location_index_in_grid(x_adjusted, y_adjusted)
+
+        # Check if we already visited it
+        if not self.grids[grid_pos][location_index]:
+            self.grids[grid_pos][location_index] = 1
+            self.unique_visited += 1
+
+    def get_unique_n_visited(self):
+        return self.unique_visited
+
+    def _get_grid_index(self, x: int, y: int):
+        grid_x = x // self.sub_grid_size
+        grid_y = y // self.sub_grid_size
+        return (grid_x, grid_y)
+
+    def _get_location_index_in_grid(self, x: int, y: int):
+        local_x = x % self.sub_grid_size
+        local_y = y % self.sub_grid_size
+        return local_x * self.sub_grid_size + local_y
 ```
 
-No performance gain, did not work as expected.
+Run time for the big job got slightly worse, but according to top, it was now using 700MB, compared to 4000MB. This was great, since this was the job I expected to use the most memory. Runtime wise, it took 8min instead of 5min, which was expected since we added more checks. I think this is a good tradeoff, since small jobs runs much faster + uses a lot less memory.
 
 |min    | avg    | max    | std   |
 |-------|--------|--------|-------|
-|12.6996|13.2447 |12.9718 |0.2445 |
+|498.2151 | 498.2151 | 498.2151 | 0.0000
+
+
+#### Further improvements - attempt 1
+
+One thing with this implementation that I did not like, was that I re-calcuated which subgrid the robot was in at every step. This is not super efficient since the chance of the robot being the same sub-grid as before is high, since the movement is continous. To address this problem I decided to "cache" the bounds of the subgrid, and the subgrind index, and instead of checking which grid the robot was in, I checked if the robot has stepped out of the bounderies and only then checked which subgrid I should use. I did not really get any great speed performance here, and the code became more complex, not a good tradeoff.
 
 
 ```
-def _act_on_command_performance(self, command: Command):
-    if Direction(command.direction) in (Direction.NORTH, Direction.SOUTH):
-        dx = 1 if Direction(command.direction) == Direction.NORTH else -1
-        for _ in range(command.steps):
-            self.x += dx
-            self.memory.add_location(self.x, self.y)
-
-    elif Direction(command.direction) in (Direction.EAST, Direction.WEST):
-        dy = 1 if Direction(command.direction) == Direction.EAST else -1
-        for _ in range(command.steps):
-            self.y += dy
-            self.memory.add_location(self.x, self.y)
+if self._is_within_current_grid(x_adjusted, y_adjusted):
+    grid_pos = self._current_grid
+else:
+    grid_pos = self._get_grid_index(x_adjusted, y_adjusted)
+    self._update_current_grid(grid_pos)
 ```
-
-No gain either. This was not a valid idea.
-
 
 |min    | avg    | max    | std   |
 |-------|--------|--------|-------|
-|12.7105|12.8693 |12.7978 |0.0680 |
+| 488.1164 | 488.1164 | 488.1164 | 0.0000
+
+#### Further improvements - attempt 2
+
+Then I decided to check which size of the subgrid that made most sense, I tested `100`, `500`, `1 000`, `2 000`, `10 000`. As you can see in the table `500` had the best run time. This is not a super scientific test, in the real world we would most likely do more iterations and control for other factors, like not running on my localmachine.  
+
+
+| SUB_GRID_SIZE | Time (ms) |
+|---------------|-----------|
+| 500           | 399.5204  |
+| 1000          | 401.6915  |
+| 2000          | 411.0268  |
+| 100           | 428.1878  |
+| 10000         | 465.0370  |
+
+
+#### Further improvements - attempt 3 - Most successful
+
+As a last improvement I came up with a new concept of checking if the robot was within a new subgrid or not. The new method is using `_steps_from_potential_edge`, which is a numbrt that keeps tracks of how many steps the robot are from a potential edge.
+
+
+It works like this:
+* Robot enters a new subgrid, `_steps_from_potential_edge` is now `1`. 
+* Next movement we will decrease `_steps_from_potential_edge` by `1`, when it hits zero it will re-trigger a calucation, we first checks if the robot has leaved the subgrid, if not we re-calculate `_steps_from_potential_edge`. E.x. If the robot went towards the middle of the subgrid then the `_steps_from_potential_edge` will be 2. This time we take 2 steps without checking. 
+
+This way, we will peform less checks if the robot are operating in the middle of a subgrid. Comparing if a int is bigger than zero should be faster than comparing if the current location are within the boundaries.
+
+With this new improvement I got a significant performance boost in the heavy job.
+
+| Time |
+|------|
+| 355.70 |
+
+ 
+Since we managed to decrease the memory foot print of the robot, without loosing that much of runtime I would say my performance improvements are successful. 

@@ -8,7 +8,7 @@ from src.models.location import Location
 
 from src.services.job_result_service import JobResultService
 
-from .memory import BitMapMemory
+from .memory import SmartDynamicGridBitMapMemory
 
 from src.utils.logger import get_logger
 
@@ -83,4 +83,4 @@ class Robot:
         I could in theory put this logic inside the Memory class, but to avoid unexpected bugs with
         reusing a class I decided it would be best to just get a new one.
         """
-        self.memory = BitMapMemory()
+        self.memory = SmartDynamicGridBitMapMemory()

@@ -149,4 +149,35 @@ case_8 = {
         "commands": 12,
     },
 }
-test_data = [case_1, case_2, case_3, case_4, case_5, case_6, case_7, case_8]
+
+# Subgrid crossing
+case_9 = {
+    "input": {
+        "start": {"x": 0, "y": 0},
+        "commands": [
+            {"direction": "east", "steps": 1000},
+            {"direction": "north", "steps": 1000},
+        ],
+    },
+    "expected": {
+        "result": 2001,
+        "commands": 2,
+    },
+}
+
+# Subgrid crossing - re-entiner
+case_10 = {
+    "input": {
+        "start": {"x": 0, "y": 0},
+        "commands": [
+            {"direction": "east", "steps": 1000},
+            {"direction": "west", "steps": 1000},
+        ],
+    },
+    "expected": {
+        "result": 1000,
+        "commands": 2,
+    },
+}
+
+test_data = [case_1, case_2, case_3, case_4, case_5, case_6, case_7, case_8, case_9, case_10]
