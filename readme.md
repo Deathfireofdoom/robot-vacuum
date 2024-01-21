@@ -373,4 +373,4 @@ With this new improvement I got a significant performance boost in the heavy job
 | 355.70 |
 
  
-Since we managed to decrease the memory foot print of the robot, without loosing that much of runtime I would say my performance improvements are successful. 
+Since we managed to decrease the memory foot print of the robot, without loosing that much of runtime I would say my performance improvements are successful. It seems it take a bit longer when I am running in Docker. 

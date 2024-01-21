@@ -2,7 +2,7 @@ from bitarray import bitarray
 
 
 class BitMapMemory:
-    # NOTE: First implementation bitmap-memory, below I implemented a better version.
+    # NOTE: First version bitmap-memory, below I implemented a better version.
     #       Still leaving this one since it shoulds the concept without extra complexity.
 
     width = 200_001
