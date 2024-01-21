@@ -175,7 +175,7 @@ case_10 = {
         ],
     },
     "expected": {
-        "result": 1000,
+        "result": 1001,
         "commands": 2,
     },
 }

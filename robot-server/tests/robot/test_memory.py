@@ -60,7 +60,7 @@ def test_smart_dynamic_memory_works_when_re_entering_sub_grid():
     length = 800
     memory = SmartDynamicGridBitMapMemory()
     locations = [(0, y) for y in range(length)] # Subgrid is 500, so should have new grid.
-    locations.extend((1, length - 1)) # one to the side
+    locations.append((1, length - 1)) # one to the side
     locations.extend([(1, y) for y in reversed(range(length))]) # Going back down
     
     first_location = locations.pop(0)
