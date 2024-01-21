@@ -73,4 +73,4 @@ def test_smart_dynamic_memory_works_when_re_entering_sub_grid():
 
     # Assert
     assert first_grid == memory._current_grid
-    assert memory.get_unique_n_visited() == len(locations) + 1 # The pop
+    assert memory.get_unique_n_visited() == len(locations) # not + 1 since there is one overlapping in going back down.
