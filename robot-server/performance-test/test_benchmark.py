@@ -20,5 +20,6 @@ def run_heavy_job():
     assert result.commands == 10000
     assert result.result == 993737501
 
-def test_benchmark(sub_grid_size, benchmark, mock_transaction_scope):
-    benchmark.pedantic(run_heavy_job, iterations=1, rounds=1, kwargs={'sub_grid_size': sub_grid_size})
+def test_benchmark(benchmark, mock_transaction_scope):
+    benchmark.pedantic(run_heavy_job, iterations=1, rounds=1)
+
