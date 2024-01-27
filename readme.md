@@ -373,4 +373,18 @@ With this new improvement I got a significant performance boost in the heavy job
 | 355.70 |
 
  
-Since we managed to decrease the memory foot print of the robot, without loosing that much of runtime I would say my performance improvements are successful. It seems it take a bit longer when I am running in Docker. 
+Since we managed to decrease the memory foot print of the robot, without loosing that much of runtime I would say my performance improvements are successful. It seems it take a bit longer when I am running in Docker.
+
+
+
+## C-implementation of Memory
+As a interesting little challenge I decided to try during the weekend was to explore the bridge between python and c, this has long been on my todo list but never got a reason to do it. But since we had pretty slow run time with the pure python implementation I decided to try it out.
+
+
+I used `ctypes` and "raw" c code, to implement and call the memory class from python. I am no C expert, but I know enough to get things to work, however, could be some quirks I am missing.
+
+
+With the new implementation the heavy job now runs in `40s`, which is a great performance compared to the previous version. Memory footprint is a bit bigger now, probably due to not super efficient c code. 
+
+
+Anyway, if you are interested look in the `src/c` folder.
