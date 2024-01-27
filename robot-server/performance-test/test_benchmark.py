@@ -21,5 +21,5 @@ def run_heavy_job():
     assert result.result == 993737501
 
 def test_benchmark(benchmark, mock_transaction_scope):
-    benchmark.pedantic(run_heavy_job, iterations=1, rounds=1)
+    benchmark.pedantic(run_heavy_job, iterations=1, rounds=3)
 

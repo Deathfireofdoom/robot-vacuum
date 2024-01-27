@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define GRID_SIZE 200001
-#define SUB_GRID_SIZE 10000
+#define SUB_GRID_SIZE 500
 #define N_SUB_GRIDS ((GRID_SIZE / SUB_GRID_SIZE) * (GRID_SIZE / SUB_GRID_SIZE))
 #define ARRAY_SIZE ((SUB_GRID_SIZE * SUB_GRID_SIZE) / 8)
 
