@@ -10,7 +10,7 @@ class BitMapMemory(ctypes.Structure):
 
 class CMemoryWrapper():
     def __init__(self):
-        self.lib = ctypes.CDLL("./src/robot/libbitmapmemory_performance.so")
+        self.lib = ctypes.CDLL("./src/c/bitmapmemory_performance.so")
         self.lib.get_unique_n_visited.restype = ctypes.c_int
         self.lib.create_bitmap_memory.restype = ctypes.POINTER(BitMapMemory)
         self.bmm = self.lib.create_bitmap_memory()
