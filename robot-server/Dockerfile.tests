@@ -4,6 +4,13 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN apt-get update && \
+    apt-get install -y gcc && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN gcc -shared -fPIC ./src/c/bitmapmemory_performance.c -o ./src/c/bitmapmemory_performance.so
+
+
 COPY test-requirements.txt .
 RUN pip install --no-cache-dir -r test-requirements.txt
 

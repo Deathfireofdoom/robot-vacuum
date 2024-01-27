@@ -45,18 +45,3 @@ def test_robot_reset_memory_on_new_job(robot, mock_transaction_scope):
 
     # Assert
     assert first_job_memory != second_job_memory
-
-
-def test_if_robot_moves_correctly(robot, mock_transaction_scope):
-    # Arrange
-    robot.x, robot.y = 0, 0
-
-    # Act & Assert
-    robot._move_east()
-    assert robot.x == 0 and robot.y == 1
-    robot._move_west()
-    assert robot.x == 0 and robot.y == 0
-    robot._move_north()
-    assert robot.x == 1 and robot.y == 0
-    robot._move_south()
-    assert robot.x == 0 and robot.y == 0

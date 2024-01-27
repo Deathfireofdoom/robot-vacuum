@@ -29,7 +29,7 @@ class Robot:
         start_time = datetime.now()
         log.info(f"starting job at {start_time.isoformat()}")
         self.x, self.y = job.start.x, job.start.y
-        #self.memory.add_location(self.x, self.y) CHECK THIS
+        self.memory.add_locations(self.x, self.y, self.x, self.y)
 
         # loop the commands and act on them
         for command in job.commands:
