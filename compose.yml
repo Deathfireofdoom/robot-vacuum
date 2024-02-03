@@ -2,10 +2,10 @@ version: "3"
 services:
     # NOTE: In case you cant pull from GHCR uncomment this block.
     #
-    unit-test-robot-server-local:
-      build:
-        context: ./robot-server
-        dockerfile: Dockerfile.tests
+    #unit-test-robot-server-local:
+    #  build:
+    #    context: ./robot-server
+    #    dockerfile: Dockerfile.tests
 
     robot-server-local:
       build:
@@ -23,7 +23,7 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
       depends_on:
-        - unit-test-robot-server-local
+      # - unit-test-robot-server-local
         - postgres
 
     #robot-server-ghcr:

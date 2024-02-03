@@ -1,0 +1,12 @@
+[package]
+name = "rust_memory"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "rust_memory"
+crate-type = ["cdylib"]
+
+[dependencies.pyo3]
+version = "0.20.2"
+features = ["extension-module"]
