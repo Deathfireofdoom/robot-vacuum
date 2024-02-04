@@ -26,19 +26,11 @@ struct Memory {
     columns: HashMap<i32, Vec<Interval>>,
 }
 
-#[pyclass]
 struct Command {
     direction: String,
     steps: i32,
 }
 
-#[pymethods]
-impl Command {
-    #[new]
-    fn new(direction: String, steps: i32) -> Self {
-        Command { direction, steps }
-    }
-}
 
 impl<'source> FromPyObject<'source> for Command {
     fn extract(obj: &'source PyAny) -> PyResult<Self> {
@@ -53,18 +45,9 @@ impl<'source> FromPyObject<'source> for Command {
 }
 
 
-#[pyclass]
 struct Location {
     x: i32,
     y: i32,
-}
-
-#[pymethods]
-impl Location {
-    #[new]
-    fn new(x: i32, y: i32) -> Self {
-        Location { x, y }
-    }
 }
 
 impl<'source> FromPyObject<'source> for Location {
@@ -105,11 +88,11 @@ impl Memory {
 
     fn _calculate_end_location(&self, command: Command, current_location: &Location) -> Location {
         match command.direction.as_str() {
-            "north" => return Location {x: current_location.x, y: current_location.y + command.steps},
-            "east" => return Location {x: current_location.x + command.steps, y: current_location.y},
-            "south" => return Location {x: current_location.x, y: current_location.y - command.steps},
-            "west" => return Location {x: current_location.x - command.steps, y: current_location.y},
-            _ => return Location {x: current_location.x, y: current_location.y},
+            "north" => Location {x: current_location.x, y: current_location.y + command.steps},
+            "east" => Location {x: current_location.x + command.steps, y: current_location.y},
+            "south" => Location {x: current_location.x, y: current_location.y - command.steps},
+            "west" => Location {x: current_location.x - command.steps, y: current_location.y},
+            _ => Location {x: current_location.x, y: current_location.y},
         }
     }
 
@@ -157,6 +140,7 @@ impl Memory {
                     return;
                 }
                 
+                // Merge the current interval with the new interval 
                 new_interval.start = min(intervals[i].start, new_interval.start);
                 new_interval.end = max(intervals[i].end, new_interval.end);
                 intervals.remove(i);
